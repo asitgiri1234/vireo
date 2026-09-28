@@ -1,0 +1,21 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.env
+*.pyc
+.streamlit/
+_probe.py
+_probe2.py
+.DS_Store
+Thumbs.db
+
+# Original pack filenames left in the working folder; the repo uses data/
+10f8491b-*.csv
+d4732158-*.csv
+72a4eaf9-*.csv
+69716760-*.csv
+e933e3ee-*.csv
+0526bc6d-*.pdf
+email-threads.txt.txt
+README.txt.txt
