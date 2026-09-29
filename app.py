@@ -116,16 +116,18 @@ with st.sidebar:
     st.header("Window")
     st.write("Weeks are Monday–Sunday, IST. The last partial week is excluded from the default.")
     start = st.selectbox(
-        "From week starting",
+        "First week (Mon)",
         options=all_weeks,
         index=all_weeks.index(default_weeks[0]) if default_weeks[0] in all_weeks else 0,
         format_func=lambda d: pd.Timestamp(d).strftime("%d %b %Y"),
+        help="Monday that starts the first week in the report. That whole week (Mon–Sun) is included.",
     )
     end = st.selectbox(
-        "To week starting",
+        "Last week (Mon)",
         options=all_weeks,
         index=all_weeks.index(default_weeks[-1]) if default_weeks[-1] in all_weeks else len(all_weeks) - 1,
         format_func=lambda d: pd.Timestamp(d).strftime("%d %b %Y"),
+        help="Monday that starts the last week in the report. That whole week (Mon–Sun) is included.",
     )
     if start > end:
         start, end = end, start
