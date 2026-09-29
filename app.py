@@ -121,16 +121,27 @@ with st.sidebar:
         index=all_weeks.index(default_weeks[0]) if default_weeks[0] in all_weeks else 0,
         format_func=lambda d: pd.Timestamp(d).strftime("%d %b %Y"),
         help="Monday that starts the first week in the report. That whole week (Mon–Sun) is included.",
+        key="first_week_mon",
     )
+    # Last week can only be on or after First week — earlier Mondays are not offered.
+    end_options = [w for w in all_weeks if pd.Timestamp(w) >= pd.Timestamp(start)]
+    if not end_options:
+        end_options = [start]
+    preferred_end = default_weeks[-1] if default_weeks else end_options[-1]
+    if preferred_end not in end_options:
+        preferred_end = end_options[-1]
+    if (
+        "last_week_mon" not in st.session_state
+        or st.session_state["last_week_mon"] not in end_options
+    ):
+        st.session_state["last_week_mon"] = preferred_end
     end = st.selectbox(
         "Last week (Mon)",
-        options=all_weeks,
-        index=all_weeks.index(default_weeks[-1]) if default_weeks[-1] in all_weeks else len(all_weeks) - 1,
+        options=end_options,
         format_func=lambda d: pd.Timestamp(d).strftime("%d %b %Y"),
-        help="Monday that starts the last week in the report. That whole week (Mon–Sun) is included.",
+        help="Only weeks on or after First week. That whole week (Mon–Sun) is included.",
+        key="last_week_mon",
     )
-    if start > end:
-        start, end = end, start
     shifts = st.multiselect("Shift", ["Morning", "Day", "Night"], default=[])
     sites = st.multiselect("Site", ["Bengaluru", "Indore"], default=[])
     st.divider()
